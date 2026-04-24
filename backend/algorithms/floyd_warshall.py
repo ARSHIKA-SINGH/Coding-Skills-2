@@ -23,17 +23,15 @@ class FlightNetwork:
         self.routes = routes
         self.codes = [airport["code"] for airport in airports]
         self.index = {code: idx for idx, code in enumerate(self.codes)}
-        self.edge_metrics: Dict[tuple, List[dict]] = {}
+        self.edge_metrics: Dict[tuple, dict] = {}
 
         for route in routes:
             key = (route["source"], route["destination"])
-            self.edge_metrics.setdefault(key, []).append(
-                {
-                    "distance": route["distance"],
-                    "duration": route["duration"],
-                    "cost": route["cost"],
-                }
-            )
+            self.edge_metrics[key] = {
+                "distance": route["distance"],
+                "duration": route["duration"],
+                "cost": route["cost"],
+            }
 
     def _build_matrices(self, optimize_by: str):
         n = len(self.codes)
@@ -82,10 +80,6 @@ class FlightNetwork:
 
         return [self.codes[idx] for idx in path_indices]
 
-    def _best_leg_metrics(self, source: str, destination: str, optimize_by: str) -> dict:
-        options = self.edge_metrics[(source, destination)]
-        return min(options, key=lambda option: option[optimize_by])
-
     def find_shortest_path(self, source: str, destination: str, optimize_by: str) -> PathResult:
         if source not in self.index or destination not in self.index:
             raise ValueError("Invalid source or destination airport code.")
@@ -104,7 +98,7 @@ class FlightNetwork:
         total_cost = 0.0
 
         for i in range(len(path) - 1):
-            leg = self._best_leg_metrics(path[i], path[i + 1], optimize_by)
+            leg = self.edge_metrics[(path[i], path[i + 1])]
             total_distance += leg["distance"]
             total_duration += leg["duration"]
             total_cost += leg["cost"]

@@ -48,17 +48,12 @@ def get_routes():
 @app.post("/find-route")
 def find_route(payload: FindRouteRequest):
     try:
-        source = payload.source.upper()
-        destination = payload.destination.upper()
-        shortest = network.find_shortest_path(source=source, destination=destination, optimize_by="distance")
-        fastest = network.find_shortest_path(source=source, destination=destination, optimize_by="duration")
-        cheapest = network.find_shortest_path(source=source, destination=destination, optimize_by="cost")
-
-        return {
-            "shortest": shortest.__dict__,
-            "fastest": fastest.__dict__,
-            "cheapest": cheapest.__dict__,
-        }
+        result = network.find_shortest_path(
+            source=payload.source.upper(),
+            destination=payload.destination.upper(),
+            optimize_by=payload.optimize_by,
+        )
+        return result.__dict__
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
