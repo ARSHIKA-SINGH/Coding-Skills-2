@@ -3,10 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Indian Flight Route Planning System</title>
+
+    <!-- 🔥 Title -->
+    <title>✈️ Indian Flight Planner</title>
+
+    <!-- 🌐 Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- 🔤 Google Font (Clean UI) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 🎨 Meta Theme -->
+    <meta name="theme-color" content="#6366F1" />
+
+    <!-- 📄 Description (for SEO / portfolio) -->
+    <meta name="description" content="Smart Indian Flight Route Optimization System using Graph Algorithms like Floyd-Warshall." />
   </head>
-  <body class="bg-slate-100">
+
+  <body class="bg-gradient-to-br from-slate-50 to-slate-200 font-[Inter]">
+
+    <!-- 🚀 App Root -->
     <div id="root"></div>
+
+    <!-- ⚡ Initial Loader (before React loads) -->
+    <div id="initial-loader" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+      <div class="text-center">
+        <div class="h-12 w-12 mx-auto rounded-full border-4 border-slate-200 border-t-indigo-500 border-r-purple-500 animate-spin"></div>
+        <p class="mt-4 text-sm text-gray-500">Launching Flight Planner...</p>
+      </div>
+    </div>
+
+    <!-- ⚡ Script -->
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- 🧠 Remove loader after load -->
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("initial-loader");
+        if (loader) loader.style.display = "none";
+      });
+    </script>
+
   </body>
 </html>

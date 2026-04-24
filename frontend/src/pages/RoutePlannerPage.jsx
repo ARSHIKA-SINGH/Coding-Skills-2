@@ -27,10 +27,12 @@ export default function RoutePlannerPage() {
       const data = await findRoute({ source, destination, optimize_by: optimizeBy });
       setResult(data);
 
-      // Bonus: compare routes for all metrics.
       const [distanceResult, costResult, durationResult] = await Promise.all(
-        optimizeOptions.map((metric) => findRoute({ source, destination, optimize_by: metric })),
+        optimizeOptions.map((metric) =>
+          findRoute({ source, destination, optimize_by: metric })
+        )
       );
+
       setComparison({ distanceResult, costResult, durationResult });
     } catch (e) {
       setError(e?.response?.data?.detail || 'Route search failed.');
@@ -41,44 +43,121 @@ export default function RoutePlannerPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-xl bg-white p-5 border border-slate-200 shadow-sm">
-        <h2 className="text-xl font-semibold">Route Planner</h2>
-        <p className="text-sm text-slate-500 mt-1">Find shortest route using Floyd-Warshall optimization.</p>
+    <div className="space-y-8">
 
-        <div className="mt-4 grid md:grid-cols-4 gap-3">
-          <select className="rounded-lg border p-2" value={source} onChange={(e) => setSource(e.target.value)}>
-            {airports.map((airport) => (
-              <option key={airport.code} value={airport.code}>{airport.code} - {airport.city}</option>
-            ))}
-          </select>
-          <select className="rounded-lg border p-2" value={destination} onChange={(e) => setDestination(e.target.value)}>
-            {airports.map((airport) => (
-              <option key={airport.code} value={airport.code}>{airport.code} - {airport.city}</option>
-            ))}
-          </select>
-          <select className="rounded-lg border p-2" value={optimizeBy} onChange={(e) => setOptimizeBy(e.target.value)}>
-            {optimizeOptions.map((metric) => (
-              <option key={metric} value={metric}>{metric.toUpperCase()}</option>
-            ))}
-          </select>
-          <button onClick={handleFindRoute} className="rounded-lg bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700">
-            Find Route
+      {/* 🔥 Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-800">✈️ Route Planner</h1>
+        <p className="text-gray-500 text-sm">
+          Find the most efficient flight route using intelligent optimization
+        </p>
+      </div>
+
+      {/* 🔥 Input Card */}
+      <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-xl transition-all">
+
+        <div className="grid md:grid-cols-4 gap-4 items-end">
+
+          {/* Source */}
+          <div>
+            <label className="text-sm text-gray-500">From</label>
+            <select
+              className="w-full mt-1 rounded-xl border border-gray-200 p-2 focus:ring-2 focus:ring-indigo-400 outline-none"
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+            >
+              {airports.map((airport) => (
+                <option key={airport.code} value={airport.code}>
+                  {airport.code} - {airport.city}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Destination */}
+          <div>
+            <label className="text-sm text-gray-500">To</label>
+            <select
+              className="w-full mt-1 rounded-xl border border-gray-200 p-2 focus:ring-2 focus:ring-indigo-400 outline-none"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            >
+              {airports.map((airport) => (
+                <option key={airport.code} value={airport.code}>
+                  {airport.code} - {airport.city}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Optimize */}
+          <div>
+            <label className="text-sm text-gray-500">Optimize By</label>
+            <select
+              className="w-full mt-1 rounded-xl border border-gray-200 p-2 focus:ring-2 focus:ring-indigo-400 outline-none"
+              value={optimizeBy}
+              onChange={(e) => setOptimizeBy(e.target.value)}
+            >
+              {optimizeOptions.map((metric) => (
+                <option key={metric} value={metric}>
+                  {metric.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Button */}
+          <button
+            onClick={handleFindRoute}
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-semibold hover:scale-105 transition-all shadow-md"
+          >
+            🚀 Find Route
           </button>
         </div>
       </div>
 
-      {loading ? <LoadingSpinner /> : null}
-      {error ? <p className="text-red-600 text-sm">{error}</p> : null}
-      {result ? <RouteResultCard title="Best Route" data={result} /> : null}
-
-      {comparison ? (
-        <div className="grid md:grid-cols-3 gap-4">
-          <RouteResultCard title="Optimized by Distance" data={comparison.distanceResult} />
-          <RouteResultCard title="Optimized by Cost" data={comparison.costResult} />
-          <RouteResultCard title="Optimized by Duration" data={comparison.durationResult} />
+      {/* 🔄 Loading */}
+      {loading && (
+        <div className="flex justify-center">
+          <LoadingSpinner />
         </div>
-      ) : null}
+      )}
+
+      {/* ❌ Error */}
+      {error && (
+        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200">
+          {error}
+        </div>
+      )}
+
+      {/* ✅ Best Route */}
+      {result && (
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl p-6">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold text-gray-800">Best Route</h2>
+            <span className="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs">
+              OPTIMAL
+            </span>
+          </div>
+
+          <RouteResultCard data={result} />
+        </div>
+      )}
+
+      {/* 📊 Comparison */}
+      {comparison && (
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Compare Optimization Strategies
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            <RouteResultCard title="Distance" data={comparison.distanceResult} />
+            <RouteResultCard title="Cost" data={comparison.costResult} />
+            <RouteResultCard title="Duration" data={comparison.durationResult} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

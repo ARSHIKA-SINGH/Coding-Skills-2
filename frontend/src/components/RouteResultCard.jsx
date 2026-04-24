@@ -1,29 +1,49 @@
 export default function RouteResultCard({ title = 'Result', data }) {
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
 
   return (
-    <div className="rounded-xl bg-white p-5 shadow-sm border border-slate-200">
-      <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-      <p className="mt-2 text-indigo-700 font-medium">{data.path.join(' → ')}</p>
-      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-        <div className="rounded-md bg-slate-50 p-3">
-          <p className="text-slate-500">Distance</p>
-          <p className="font-semibold">{data.total_distance} km</p>
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 p-6">
+
+      {/* Header */}
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <span className="text-xs bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full">
+          Route
+        </span>
+      </div>
+
+      {/* Route Path */}
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-xl p-4 text-sm text-indigo-700 font-medium">
+        ✈️ {data.path.join(' → ')}
+      </div>
+
+      {/* Metrics */}
+      <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+
+        {/* Distance */}
+        <div className="rounded-xl bg-slate-50 p-4 text-center hover:bg-indigo-50 transition">
+          <p className="text-gray-500 text-xs">Distance</p>
+          <p className="font-semibold text-gray-800">{data.total_distance} km</p>
         </div>
-        <div className="rounded-md bg-slate-50 p-3">
-          <p className="text-slate-500">Duration</p>
-          <p className="font-semibold">{data.total_duration} hrs</p>
+
+        {/* Duration */}
+        <div className="rounded-xl bg-slate-50 p-4 text-center hover:bg-indigo-50 transition">
+          <p className="text-gray-500 text-xs">Duration</p>
+          <p className="font-semibold text-gray-800">{data.total_duration} hrs</p>
         </div>
-        <div className="rounded-md bg-slate-50 p-3">
-          <p className="text-slate-500">Cost</p>
-          <p className="font-semibold">₹{data.total_cost}</p>
+
+        {/* Cost */}
+        <div className="rounded-xl bg-slate-50 p-4 text-center hover:bg-indigo-50 transition">
+          <p className="text-gray-500 text-xs">Cost</p>
+          <p className="font-semibold text-gray-800">₹{data.total_cost}</p>
         </div>
-        <div className="rounded-md bg-slate-50 p-3">
-          <p className="text-slate-500">Flights</p>
-          <p className="font-semibold">{data.flights_count}</p>
+
+        {/* Flights */}
+        <div className="rounded-xl bg-slate-50 p-4 text-center hover:bg-indigo-50 transition">
+          <p className="text-gray-500 text-xs">Flights</p>
+          <p className="font-semibold text-gray-800">{data.flights_count}</p>
         </div>
+
       </div>
     </div>
   );

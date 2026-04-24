@@ -11,26 +11,49 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-full md:w-72 bg-slate-900 text-white p-5 md:min-h-screen">
-      <h1 className="text-xl font-bold">Indian Flight Planner</h1>
-      <p className="text-xs text-slate-300 mt-1">Domestic Route Optimization</p>
+    <aside className="w-full md:w-72 bg-gradient-to-b from-[#0F172A] to-[#1E293B] text-white p-5 md:min-h-screen shadow-xl">
 
-      <nav className="mt-8 space-y-2">
+      {/* Logo / Title */}
+      <div className="mb-10">
+        <h1 className="text-2xl font-bold tracking-wide flex items-center gap-2">
+          ✈️ Flight Planner
+        </h1>
+        <p className="text-xs text-slate-400 mt-1">
+          Smart Route Optimization
+        </p>
+      </div>
+
+      {/* Navigation */}
+      <nav className="space-y-2">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-                isActive ? 'bg-indigo-500 text-white' : 'text-slate-200 hover:bg-slate-800'
+              `group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                isActive
+                  ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
               }`
             }
           >
-            <Icon size={16} />
-            {label}
+            {/* Icon */}
+            <Icon
+              size={18}
+              className="transition-transform duration-200 group-hover:scale-110"
+            />
+
+            {/* Label */}
+            <span>{label}</span>
           </NavLink>
         ))}
       </nav>
+
+      {/* Bottom Section (optional branding) */}
+      <div className="mt-12 p-4 rounded-xl bg-white/5 text-xs text-slate-400">
+        🚀 Built with React + FastAPI  
+      </div>
+
     </aside>
   );
 }

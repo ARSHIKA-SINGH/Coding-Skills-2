@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🔤 Global Font */
 body {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  @apply bg-gradient-to-br from-slate-50 to-slate-200 text-gray-800 antialiased;
+}
+
+/* ✨ Smooth UI */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* 📜 Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* 🔥 Reusable Card Component */
+.card {
+  @apply bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-xl transition-all;
+}
+
+/* 🎯 Button Primary */
+.btn-primary {
+  @apply bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-semibold shadow-md hover:scale-105 transition-all;
+}
+
+/* ⚡ Input Field */
+.input {
+  @apply w-full rounded-xl border border-gray-200 p-2 focus:ring-2 focus:ring-indigo-400 outline-none;
+}
+
+/* 🧾 Section Title */
+.section-title {
+  @apply text-lg font-semibold text-gray-800 mb-3;
 }
