@@ -144,6 +144,7 @@ npm run dev
 
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Author / Contributors
 
-**Arshika Singh**
+**Arshika Singh**(Project Owner)
+**Sripragna Akula**(Contributors)
